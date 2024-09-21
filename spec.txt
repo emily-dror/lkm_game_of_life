@@ -6,9 +6,11 @@ Implement a chardev such that:
 1) The file will show up in `/dev` as a file named `game_of_life`.
 2) The file will be owned by user `root` and group `root`.
 3) The permissions for the file will be rw-rw-rw-.
-4) All operations return -ENOMEM in case of memory allocation errors and -EINVAL when provided pointers to bad memory (if they are relevant to the operation).
+4) All operations return -ENOMEM in case of memory allocation errors and
+    -EINVAL when provided pointers to bad memory (if they are relevant to the operation).
 
-The game will contain a 16x32 (16 rows, 32 cols) grid. Coordinate (0,0) should be the upper-left corner, and (15,31) the bottom-right corner.
+The game will contain a 16x32 (16 rows, 32 cols) grid.
+Coordinate (0,0) should be the upper-left corner, and (15,31) the bottom-right corner.
 The first entry in the coordinate is the row, and the second is the column.
 
 The basic rules of the game are:
@@ -37,7 +39,8 @@ Return values for all operations:
 1) Non-negative integer in case of success.
 2) Specified errno in case of failure. If an appropriate errno was not explicitly specified, choose one.
 
-open - Creates an empty grid. Only one grid can be active at a time, so calling open again without closing should return an error (EBUSY).
+open - Creates an empty grid. Only one grid can be active at a time,
+so calling open again without closing should return an error (EBUSY).
 The other arguments are not used.
 Return value in case of success: file descriptor (note that this is a non-negative integer).
 
@@ -56,7 +59,8 @@ The whence argument should be used as usual (SEEK_SET matches cell (0,0)).
 If the input number is not in the permitted range return an error (EPERM) and don't change offset.
 Return value in case of success: current file offset from (0,0) (note that this is a non-negative integer).
 
-ioctl - Op 0 should receive another printable ascii (single char in the range  0x21-0x7e) as argument that changes the live cell character to it. If no valid char was received an error should be returned (EINVAL).
+ioctl - Op 0 should receive another printable ascii (single char in the range  0x21-0x7e) as argument that changes the live cell character to it.
+If no valid char was received an error should be returned (EINVAL).
 Op 1 performs a "tick", meaning that it calculates the next state of the grid according to the rules of the game.
 Other ops should return an error (EPERM).
 Relevant macros:
